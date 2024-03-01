@@ -43,7 +43,7 @@ public class ParenSymmetry {
     private void checkFile(String filename) {// for each line in the file
         // open file named filename
         File inputFile = new File(filename);  // Create a File object w/ path of filename
-        Scanner inputScanner = null;
+        Scanner inputScanner;
         try {
             inputScanner = new Scanner(inputFile);
         } catch (FileNotFoundException e) {
