@@ -1,6 +1,9 @@
 package src.main.java;
 
-import java.util.Arrays;  // Used for filling openParenArray
+import java.io.FileNotFoundException;
+import java.util.Arrays;
+import java.io.File;
+import java.util.Scanner;
 
 public class ParenSymmetry {
 
@@ -37,28 +40,36 @@ public class ParenSymmetry {
         return openParenArray[0] == ' ';
     }
 
-    private void checkFile(String filename) {
+    private void checkFile(String filename) {// for each line in the file
         // open file named filename
+        File inputFile = new File(filename);  // Create a File object w/ path of filename
+        Scanner inputScanner = null;
+        try {
+            inputScanner = new Scanner(inputFile);
+        } catch (FileNotFoundException e) {
+            System.out.println("FILE NOT FOUND");
+            throw new RuntimeException(e);
+        }
 
-        // for each line in the file
-            // read the line
-            // print whether or not the line's parenthesis are balanced
+        while(inputScanner.hasNextLine()){
+            // ASSERT: Scanner hasn't reached EOF
+            String input = inputScanner.nextLine(); // read the line
+            System.out.println(input + " = " + isBalanced(input)); // print whether or not the line's
+                                                                   // parenthesis are balanced
+        }
+        inputScanner.close();
 
         // CLOSE the file
     }
 
     public static void main(String[] args) {
         ParenSymmetry ps = new ParenSymmetry();
-
+        ps.checkFile("TestStrings0.txt");
+        ps.checkFile("TestStrings1.txt");
         Boolean b0 = ps.isBalanced("()");
         printResult(b0, true);
 
         String[] falseStrings = {"(", "((", ")", "", "(()())((())))"};
-        System.out.println("Should = false. Actual Answer = " + ps.isBalanced("("));
-        System.out.println("Should = false. Actual Answer = " + ps.isBalanced("(("));
-        System.out.println("Should = false. Actual Answer = " + ps.isBalanced(")"));
-        System.out.println("Should = false. Actual Answer = " + ps.isBalanced(""));
-        System.out.println("Should = false. Actual Answer = " + ps.isBalanced("(()())((())))"));;
         Boolean falses = true;
         for (String strToTest : falseStrings) {
             falses = ps.isBalanced(strToTest);
@@ -67,12 +78,6 @@ public class ParenSymmetry {
 
         String[] trueStrings = {"()", "(())", "(((())))", "", "(()())((()))", "(   )", "( () ( ) )"};
 
-        System.out.println("Should = true. Actual Answer = " + ps.isBalanced("()"));
-        System.out.println("Should = true. Actual Answer = " + ps.isBalanced("(())"));
-        System.out.println("Should = true. Actual Answer = " + ps.isBalanced("(((())))"));
-        System.out.println("Should = true. Actual Answer = " + ps.isBalanced("(()())((()))"));
-        System.out.println("Should = true. Actual Answer = " + ps.isBalanced("(   )"));
-        System.out.println("Should = true. Actual Answer = " + ps.isBalanced("( () ( ) )( () ( ) )"));
         Boolean trues = false;
         for (String strToTest : trueStrings) {
             trues = ps.isBalanced(strToTest);
